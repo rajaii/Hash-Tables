@@ -13,6 +13,7 @@ class HashTable:
     that accepts string keys
     '''
     def __init__(self, capacity):
+        self.count = 0
         self.capacity = capacity  # Number of buckets in the hash table
         self.storage = [None] * capacity
 
@@ -29,10 +30,15 @@ class HashTable:
     def _hash_djb2(self, key):
         '''
         Hash an arbitrary key using DJB2 hash
-
+        
         OPTIONAL STRETCH: Research and implement DJB2
         '''
-        pass
+         # Start from an arbitrary large prime
+        hash_value = 5381
+        # Bit-shift and sum value for each character
+        for char in key:
+            hash_value = ((hash_value << 5) + hash_value) + char
+        return hash_value
 
 
     def _hash_mod(self, key):
@@ -54,7 +60,16 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        hash_key = self._hash_mod(key)
+
+        if self.count == self.capacity:
+            self.resize()
+        
+        self.storage[hash_key] = value
+
+        self.count += 0
+
+        return self.storage[hash_key]
 
 
 
@@ -66,8 +81,16 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        hash_key = self._hash_mod(key)
 
+        if not self.retrieve(key):
+            print(f'Warning!! {key} is not an actual key for this hash table!')
+
+        else:
+            self.storage[hash_key] = None
+        count -= 1
+
+        return self.storage
 
     def retrieve(self, key):
         '''
@@ -77,7 +100,8 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        hash_key = self._hash_mod(key)
+        return self.storage[hash_key]
 
 
     def resize(self):
@@ -92,29 +116,50 @@ class HashTable:
 
 
 if __name__ == "__main__":
-    ht = HashTable(2)
+    # ht = HashTable(2)
 
-    ht.insert("line_1", "Tiny hash table")
-    ht.insert("line_2", "Filled beyond capacity")
-    ht.insert("line_3", "Linked list saves the day!")
+    # ht.insert("line_1", "Tiny hash table")
+    # ht.insert("line_2", "Filled beyond capacity")
+    # ht.insert("line_3", "Linked list saves the day!")
 
-    print("")
+    # print("")
 
-    # Test storing beyond capacity
-    print(ht.retrieve("line_1"))
-    print(ht.retrieve("line_2"))
-    print(ht.retrieve("line_3"))
+    # # Test storing beyond capacity
+    # print(ht.retrieve("line_1"))
+    # print(ht.retrieve("line_2"))
+    # print(ht.retrieve("line_3"))
 
-    # Test resizing
-    old_capacity = len(ht.storage)
-    ht.resize()
-    new_capacity = len(ht.storage)
+    # # Test resizing
+    # old_capacity = len(ht.storage)
+    # ht.resize()
+    # new_capacity = len(ht.storage)
 
-    print(f"\nResized from {old_capacity} to {new_capacity}.\n")
+    # print(f"\nResized from {old_capacity} to {new_capacity}.\n")
 
-    # Test if data intact after resizing
-    print(ht.retrieve("line_1"))
-    print(ht.retrieve("line_2"))
-    print(ht.retrieve("line_3"))
+    # # Test if data intact after resizing
+    # print(ht.retrieve("line_1"))
+    # print(ht.retrieve("line_2"))
+    # print(ht.retrieve("line_3"))
 
-    print("")
+    # print("")
+
+    h = HashTable(8)
+
+    h.insert("key-0", "val-0")
+    h.insert("key-1", "val-1")
+    h.insert("key-2", "val-2")
+    h.insert("key-3", "val-3")
+    h.insert("key-4", "val-4")
+    h.insert("key-5", "val-5")
+    h.insert("key-6", "val-6")
+    h.insert("key-7", "val-7")
+    # ht.insert("key-8", "val-8")
+    # ht.insert("key-9", "val-9")
+
+    print(h.retrieve('key-0'))
+    print(h.retrieve('key-7'))
+
+    
+
+
+

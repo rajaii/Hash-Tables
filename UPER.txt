@@ -1,0 +1,28 @@
+research djb2 hash and check if it is ok
+do insert and remove:
+insert:
+
+
+hash the key
+
+if at capacity, resize else just add to the storage
+
+add to count
+
+
+if collisions return error else
+return storage
+
+Done still need to handle collisions and logic for resize and check if it works on insert
+
+remove:
+
+
+
+resize:
+
+questions for teddy:
+should we return in these functions?
+
+
+
