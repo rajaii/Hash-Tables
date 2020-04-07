@@ -20,9 +20,9 @@ remove:
 
 
 resize:
+make capacity * 2
+makenew storage
 
-questions for teddy:
-should we return in these functions?
 
 
 
