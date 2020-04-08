@@ -23,6 +23,17 @@ resize:
 make capacity * 2
 makenew storage
 
+Day 2:
+
+handle collisions in insert and do resize method
+
+insert:
+if index is taken, traverse linked pair and add next value to end of pair:
+    pointer points to new k,v pair, which itself points to none
 
 
 
+handle all cases where more than 1 pair in lp
+
+
+maybe 170 and 166 in resize needs a nested if for if the new hashes overlap again
