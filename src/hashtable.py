@@ -73,7 +73,6 @@ class HashTable:
         pair = self.storage[index]
         if pair is not None and pair.key == key:
             #if so add new pair to linkedpair that is stored
-            pair.key = key
             pair.value = value
         elif pair is not None and pair.key != key:
             if pair.next is not None and pair.next.key == key:
@@ -87,7 +86,7 @@ class HashTable:
                     pair = nxt
                 if pair.next is None:
                     pair.next = LinkedPair(key, value)
-                    self.count += 1
+                    
         else:
             #if not, Create a new linkedpair and place it in the bucket
             self.storage[index] = LinkedPair(key, value)
@@ -109,12 +108,18 @@ class HashTable:
         if self.storage[index] is not None and self.storage[index].key == key:
             # If so, remove that pair
             self.storage[index] = None
-            self.storage -= 1
+            self.count -= 1
         elif self.storage[index] is not None and self.storage[index].key != key:
-            if self.storage[index].next.key == key:
-                self.storage[index].next = None
-            else:
-                print('Warninge: key does not exist')
+            #traverse until find key = key and set that to none and count -= 1
+            pair = self.storage[index]
+            while pair is not None and pair.next is not None:
+                curr = pair
+                nxt = pair.next
+                if nxt.key == key:
+                    nxt = None
+                pair = nxt
+            print('warning: key does not exist')
+        #if is None
         else:
             # Else print warning
             print("Warning: Key does not exist")
@@ -130,6 +135,7 @@ class HashTable:
        
          # Get the index from hashmod
         index = self._hash_mod(key)
+        
 
         # Check if a pair exists in the bucket with matching keys
         # print(f'index: {index}')
@@ -137,8 +143,16 @@ class HashTable:
             # If so, return the value
             return self.storage[index].value
         elif self.storage[index] is not None and self.storage[index].key != key:
-            # Else return None
-            return self.storage[index].next.value
+            # Elif traverse until key == key and then return value
+            pair = self.storage[index]
+            while pair.next is not None:
+                current = pair
+                nxt = pair.next
+                if nxt.key == key:
+                    return nxt.value
+                pair = nxt
+            return None
+            
         else:
             return None
 
@@ -153,17 +167,18 @@ class HashTable:
         '''
         self.capacity *= 2
         new_storage = [None] * self.capacity
-        
-        # for i in self.storage:
-        #     if i is None:
-        #         continue
-        #     new_key = self._hash_mod(i.key)
-        #     print(f'i = {i.key}, new_key = {new_key}')
-        #     new_storage[new_key] = self.storage[i.key]
 
         for i in range(len(self.storage)-1):
-            if self.storage[i] is None:
+            pair = self.storage[i]
+            if pair is None:
                 continue
+            elif pair is not None:
+                if pair.next is None:
+                    
+
+
+        self.storage = new_storage
+            
             elif self.storage[i].next is None:
                 new_key = self._hash_mod(self.storage[i].key)
                 print(f'i = {self.storage[i]}, new_key = {new_key}')
@@ -186,7 +201,7 @@ class HashTable:
                     new_storage[new_key2] = self.storage[i].next
 
 
-        self.storage = new_storage
+        
         
 
 

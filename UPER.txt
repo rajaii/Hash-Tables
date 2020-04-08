@@ -1,39 +1,25 @@
-research djb2 hash and check if it is ok
-do insert and remove:
-insert:
+insert
+if pair is not none and pair.key is key overwrite
+
+elif nor none and pair.key not key
+    traverse linked list and overwrite if current.key == key
+    or make new linked pair at end if key not in there
+
+    to traverse (key, value) =>  (key, value) => None
 
 
-hash the key
+remove
 
-if at capacity, resize else just add to the storage
+retrieve
 
-add to count
+resize
 
+USE PYTHON TUTOR TOMORROW TO CHECK INSERT BEFORE GOING ON TO NEXT
 
-if collisions return error else
-return storage
+Done insert good
 
-Done still need to handle collisions and logic for resize and check if it works on insert
+retrieve good (check in pytutor if not working after others)
 
-remove:
+remove good (check in pytutor if not)
 
-
-
-resize:
-make capacity * 2
-makenew storage
-
-Day 2:
-
-handle collisions in insert and do resize method
-
-insert:
-if index is taken, traverse linked pair and add next value to end of pair:
-    pointer points to new k,v pair, which itself points to none
-
-
-
-handle all cases where more than 1 pair in lp
-
-
-maybe 170 and 166 in resize needs a nested if for if the new hashes overlap again
+resize needs work
