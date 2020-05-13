@@ -1,0 +1,25 @@
+insert
+if pair is not none and pair.key is key overwrite
+
+elif nor none and pair.key not key
+    traverse linked list and overwrite if current.key == key
+    or make new linked pair at end if key not in there
+
+    to traverse (key, value) =>  (key, value) => None
+
+
+remove
+
+retrieve
+
+resize
+
+USE PYTHON TUTOR TOMORROW TO CHECK INSERT BEFORE GOING ON TO NEXT
+
+Done insert good
+
+retrieve good (check in pytutor if not working after others)
+
+remove good (check in pytutor if not)
+
+resize needs work

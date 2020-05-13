@@ -13,8 +13,12 @@ class HashTable:
     that accepts string keys
     '''
     def __init__(self, capacity):
+        self.count = 0
         self.capacity = capacity  # Number of buckets in the hash table
         self.storage = [None] * capacity
+
+    def __str__(self):
+        return f'<{self.key}, {self.value}>'
 
 
     def _hash(self, key):
@@ -29,10 +33,15 @@ class HashTable:
     def _hash_djb2(self, key):
         '''
         Hash an arbitrary key using DJB2 hash
-
+        
         OPTIONAL STRETCH: Research and implement DJB2
         '''
-        pass
+         # Start from an arbitrary large prime
+        hash_value = 5381
+        # Bit-shift and sum value for each character
+        for char in key:
+            hash_value = ((hash_value << 5) + hash_value) + char
+        return hash_value
 
 
     def _hash_mod(self, key):
@@ -54,9 +63,36 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        #hashmod the key to find bucket
+        index = self._hash_mod(key)
 
+        if self.count >= self.capacity:
+            self.resize()
 
+        #check if a pair already exists in the bucket
+        pair = self.storage[index]
+        if pair is not None and pair.key == key:
+            #if so add new pair to linkedpair that is stored
+            pair.value = value
+        elif pair is not None and pair.key != key:
+            if pair.next is not None and pair.next.key == key:
+                pair.next.value = value
+            else:
+                while pair.next is not None:
+                    current = pair
+                    nxt = pair.next
+                    if nxt.key == key:
+                        nxt.value = value
+                    pair = nxt
+                if pair.next is None:
+                    pair.next = LinkedPair(key, value)
+                    
+        else:
+            #if not, Create a new linkedpair and place it in the bucket
+            self.storage[index] = LinkedPair(key, value)
+            self.count += 1
+
+        
 
     def remove(self, key):
         '''
@@ -66,8 +102,27 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        index = self._hash_mod(key)
 
+        # Check if a pair exists in the bucket with matching keys
+        if self.storage[index] is not None and self.storage[index].key == key:
+            # If so, remove that pair
+            self.storage[index] = None
+            self.count -= 1
+        elif self.storage[index] is not None and self.storage[index].key != key:
+            #traverse until find key = key and set that to none and count -= 1
+            pair = self.storage[index]
+            while pair is not None and pair.next is not None:
+                curr = pair
+                nxt = pair.next
+                if nxt.key == key:
+                    nxt = None
+                pair = nxt
+            print('warning: key does not exist')
+        #if is None
+        else:
+            # Else print warning
+            print("Warning: Key does not exist")
 
     def retrieve(self, key):
         '''
@@ -77,7 +132,30 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+       
+         # Get the index from hashmod
+        index = self._hash_mod(key)
+        
+
+        # Check if a pair exists in the bucket with matching keys
+        # print(f'index: {index}')
+        if self.storage[index] is not None and self.storage[index].key == key:
+            # If so, return the value
+            return self.storage[index].value
+        elif self.storage[index] is not None and self.storage[index].key != key:
+            # Elif traverse until key == key and then return value
+            pair = self.storage[index]
+            while pair.next is not None:
+                current = pair
+                nxt = pair.next
+                if nxt.key == key:
+                    return nxt.value
+                pair = nxt
+            return None
+            
+        else:
+            return None
+
 
 
     def resize(self):
@@ -87,7 +165,44 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        self.capacity *= 2
+        new_storage = [None] * self.capacity
+
+        for i in range(len(self.storage)-1):
+            pair = self.storage[i]
+            if pair is None:
+                continue
+            elif pair is not None:
+                if pair.next is None:
+                    
+
+
+        self.storage = new_storage
+            
+            elif self.storage[i].next is None:
+                new_key = self._hash_mod(self.storage[i].key)
+                print(f'i = {self.storage[i]}, new_key = {new_key}')
+                #if there is a pair housed in newstorage at the new key
+                if new_storage[new_key]:
+                    #set the next of that to be a new lp
+                    new_storage[new_key].next = LinkedPair(self.storage[i].key, self.storage[i].value)
+                else:
+                    new_storage[new_key] = self.storage[i]
+            elif self.storage[i].next is not None:
+                new_key1 = self._hash_mod(self.storage[i].key)
+                new_key2 = self._hash_mod(self.storage[i].next.key)
+                if new_storage[new_key1]:
+                    new_storage[new_key1].next = LinkedPair(self.storage[i].key, self.storage[i].value)
+                else:
+                    new_storage[new_key1] = self.storage[i]
+                if new_storage[new_key2]:
+                    new_storage[new_key2].next = LinkedPair(self.storage[i].next.key, self.storage[i].next.value)
+                else:
+                    new_storage[new_key2] = self.storage[i].next
+
+
+        
+        
 
 
 
@@ -118,3 +233,6 @@ if __name__ == "__main__":
     print(ht.retrieve("line_3"))
 
     print("")
+   
+
+   
